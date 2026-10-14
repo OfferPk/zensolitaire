@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#052e16">
+  <meta name="description" content="ZenSolitaire — Sleek, modern offline Klondike Solitaire card game with procedural Web Audio, hints, auto-finish, and unlimited undo.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>ZenSolitaire — Calm Klondike Solitaire</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="table-wrapper">
+    <!-- Header / HUD -->
+    <header>
+      <div class="brand">
+        <img src="favicon.svg" alt="ZenSolitaire Logo" class="brand-icon">
+        <h1 class="brand-title">ZenSolitaire</h1>
+      </div>
+
+      <div class="hud">
+        <div class="hud-item">
+          <span class="hud-label">Score</span>
+          <span id="score-val" class="hud-val">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Moves</span>
+          <span id="moves-val" class="hud-val">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Time</span>
+          <span id="time-val" class="hud-val">0:00</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="draw-mode-btn" class="text-btn" title="Toggle Draw Mode" aria-label="Toggle Draw Mode">Draw 1</button>
+        <button id="hint-btn" class="icon-btn" title="Hint" aria-label="Hint">💡</button>
+        <button id="undo-btn" class="icon-btn" title="Undo" aria-label="Undo">↩️</button>
+        <button id="sound-btn" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
+        <button id="theme-btn" class="icon-btn" title="Change Felt Theme" aria-label="Change Felt Theme">🎨</button>
+        <button id="stats-btn" class="icon-btn" title="Statistics" aria-label="Statistics">📊</button>
+        <button id="new-game-btn" class="icon-btn" title="New Game" aria-label="New Game">✨</button>
+      </div>
+    </header>
+
+    <!-- Main Playing Field -->
+    <main class="playing-field">
+      <!-- Upper Deck (Stock, Waste, Empty Spacer, Foundations) -->
+      <section class="upper-deck" aria-label="Upper Card Deck">
+        <!-- Stock -->
+        <div id="stock-slot" class="card-slot" role="button" tabindex="0" aria-label="Stock Pile">
+          <span class="stock-reload-icon">🔄</span>
+          <span id="stock-count" class="stock-badge">24</span>
+        </div>
+
+        <!-- Waste -->
+        <div id="waste-slot" class="card-slot" aria-label="Waste Pile"></div>
+
+        <!-- Empty Spacer Slot -->
+        <div class="card-slot-spacer"></div>
+
+        <!-- 4 Foundations (♠ Spades, ♥ Hearts, ♦ Diamonds, ♣ Clubs) -->
+        <div id="foundation-0" class="card-slot watermark" data-suit-symbol="♠" data-f-index="0" aria-label="Spades Foundation"></div>
+        <div id="foundation-1" class="card-slot watermark" data-suit-symbol="♥" data-f-index="1" aria-label="Hearts Foundation"></div>
+        <div id="foundation-2" class="card-slot watermark" data-suit-symbol="♦" data-f-index="2" aria-label="Diamonds Foundation"></div>
+        <div id="foundation-3" class="card-slot watermark" data-suit-symbol="♣" data-f-index="3" aria-label="Clubs Foundation"></div>
+      </section>
+
+      <!-- Lower Deck (7 Tableau Columns) -->
+      <section class="lower-deck" aria-label="Tableau Columns">
+        <div id="tableau-0" class="card-slot tableau-col" data-col-index="0" aria-label="Column 1"></div>
+        <div id="tableau-1" class="card-slot tableau-col" data-col-index="1" aria-label="Column 2"></div>
+        <div id="tableau-2" class="card-slot tableau-col" data-col-index="2" aria-label="Column 3"></div>
+        <div id="tableau-3" class="card-slot tableau-col" data-col-index="3" aria-label="Column 4"></div>
+        <div id="tableau-4" class="card-slot tableau-col" data-col-index="4" aria-label="Column 5"></div>
+        <div id="tableau-5" class="card-slot tableau-col" data-col-index="5" aria-label="Column 6"></div>
+        <div id="tableau-6" class="card-slot tableau-col" data-col-index="6" aria-label="Column 7"></div>
+      </section>
+
+      <!-- Auto-Finish Action Bar -->
+      <div id="auto-finish-bar" class="auto-finish-bar" style="display: none;">
+        <div class="auto-finish-info">
+          <span>✨</span>
+          <span>All remaining cards are ready to clear!</span>
+        </div>
+        <button id="auto-finish-btn" class="auto-finish-btn">Auto-Finish</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Win Celebration Modal -->
+  <div id="win-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="win-modal-title">
+    <div class="modal-card win-banner">
+      <div class="win-icon">🏆</div>
+      <h2 id="win-modal-title" class="win-title">Victory!</h2>
+      <p class="win-subtitle">You have completed the Solitaire puzzle.</p>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div id="win-score" class="stat-num">0</div>
+          <div class="stat-desc">Final Score</div>
+        </div>
+        <div class="stat-box">
+          <div id="win-time" class="stat-num">0:00</div>
+          <div class="stat-desc">Time Taken</div>
+        </div>
+        <div class="stat-box">
+          <div id="win-moves" class="stat-num">0</div>
+          <div class="stat-desc">Total Moves</div>
+        </div>
+        <div class="stat-box">
+          <div id="win-streak" class="stat-num">1</div>
+          <div class="stat-desc">Current Streak</div>
+        </div>
+      </div>
+      <button id="play-again-btn" class="btn-primary">Play Another Game</button>
+    </div>
+  </div>
+
+  <!-- Statistics Modal -->
+  <div id="stats-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="stats-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="stats-modal-title" class="modal-title">Your Statistics</h2>
+        <button id="close-stats-btn" class="close-btn" aria-label="Close Statistics">&times;</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div id="stat-played" class="stat-num">0</div>
+          <div class="stat-desc">Played</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-won" class="stat-num">0</div>
+          <div class="stat-desc">Won</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-winrate" class="stat-num">0%</div>
+          <div class="stat-desc">Win Rate</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-best-score" class="stat-num">0</div>
+          <div class="stat-desc">Best Score</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-fewest-moves" class="stat-num">-</div>
+          <div class="stat-desc">Fewest Moves</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-best-time" class="stat-num">-</div>
+          <div class="stat-desc">Fastest Time</div>
+        </div>
+      </div>
+      <button id="close-stats-action-btn" class="btn-primary">Back to Game</button>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Scripts -->
+  <script src="solitaire.js"></script>
+  <script src="audio.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
