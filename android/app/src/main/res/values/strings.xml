@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ZenSolitaire</string>
+    <string name="title_activity_main">ZenSolitaire</string>
+    <string name="package_name">pk.offer.zensolitaire</string>
+    <string name="custom_url_scheme">pk.offer.zensolitaire</string>
+</resources>

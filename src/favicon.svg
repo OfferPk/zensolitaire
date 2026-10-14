@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#14532d" />
+      <stop offset="100%" stop-color="#052e16" />
+    </radialGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f1f5f9" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+  </defs>
+
+  <!-- Table Background -->
+  <rect width="512" height="512" rx="108" fill="url(#bg)" />
+
+  <!-- Felt Border Accent -->
+  <rect x="24" y="24" width="464" height="464" rx="88" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6" />
+
+  <!-- Back Card (Tilted) -->
+  <g transform="rotate(-12 230 270)" filter="url(#shadow)">
+    <rect x="150" y="110" width="180" height="260" rx="20" fill="#1e293b" stroke="#334155" stroke-width="4" />
+    <rect x="162" y="122" width="156" height="236" rx="14" fill="#0f172a" />
+    <circle cx="240" cy="240" r="36" fill="none" stroke="url(#goldGrad)" stroke-width="4" />
+    <path d="M240 220 L246 235 L262 240 L246 245 L240 260 L234 245 L218 240 L234 235 Z" fill="url(#goldGrad)" />
+  </g>
+
+  <!-- Front Card (Ace of Spades) -->
+  <g transform="rotate(8 270 260)" filter="url(#shadow)">
+    <rect x="180" y="120" width="180" height="260" rx="20" fill="url(#cardGrad)" stroke="#cbd5e1" stroke-width="4" />
+
+    <!-- Corner A -->
+    <text x="202" y="160" font-family="-apple-system, system-ui, sans-serif" font-size="32" font-weight="bold" fill="#0f172a" text-anchor="middle">A</text>
+    <path d="M202 172 C196 178 194 186 202 192 C210 186 208 178 202 172 Z" fill="#0f172a" />
+    <path d="M200 190 L204 190 L203 195 L201 195 Z" fill="#0f172a" />
+
+    <!-- Big Center Spade -->
+    <g transform="translate(270, 250) scale(1.6)">
+      <!-- Spade Shape -->
+      <path d="M0 -36 C -18 -8, -32 6, -32 20 C -32 34, -18 42, 0 32 C 18 42, 32 34, 32 20 C 32 6, 18 -8, 0 -36 Z" fill="#0f172a" />
+      <path d="M-6 26 L6 26 L10 46 L-10 46 Z" fill="#0f172a" />
+    </g>
+
+    <!-- Bottom Corner A (Rotated) -->
+    <g transform="rotate(180 270 250)">
+      <text x="202" y="160" font-family="-apple-system, system-ui, sans-serif" font-size="32" font-weight="bold" fill="#0f172a" text-anchor="middle">A</text>
+    </g>
+  </g>
+</svg>

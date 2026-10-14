@@ -1,0 +1,36 @@
+{
+  "name": "zensolitaire",
+  "version": "1.0.0",
+  "description": "ZenSolitaire: sleek, modern offline Klondike Solitaire (vanilla JS + Capacitor Android)",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node test/logic.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OfferPk/zensolitaire.git"
+  },
+  "keywords": [
+    "solitaire",
+    "klondike",
+    "offline-game",
+    "casual-game",
+    "capacitor",
+    "pwa",
+    "card-game",
+    "patience"
+  ],
+  "author": "OfferPk",
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "appId": "pk.offer.zensolitaire",
+  "appName": "ZenSolitaire",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#0d3b24"
+  }
+}
